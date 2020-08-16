@@ -68,5 +68,12 @@ foodSchema.statics.findFoodsByType = function (typeName, cb) {
     return food.find({});
   }
 };
+
+foodSchema.statics.checkLikedOrNot = function ({ uid, fid }, cb) {
+  const food = this.findOne({ _id: fid, like: { $in: [uid] } });
+  if (food) return true;
+  else return false;
+};
+
 const FoodModel = mongoose.model("Food", foodSchema);
 export default FoodModel;

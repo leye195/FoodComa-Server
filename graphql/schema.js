@@ -17,6 +17,7 @@ const typeDefinitions = gql`
     _id: String
     writer: User!
     content: String
+    rate: Float
   }
   type User {
     _id: String
@@ -40,12 +41,15 @@ const typeDefinitions = gql`
     foods(type: String!): [Food]
     food(id: ID!): Food
     categories: [Category]
+    userReviews(uid: ID!): [Review]
+    like(uid: ID!): [Food]
   }
   type Mutation {
     signUp(email: String!, password: String!): SignResponse!
     signInEmail(email: String!, password: String!): SignResponse!
     logOut: Boolean!
-    submitReview(id: String!, content: String!, target: String!): Boolean!
+    submitReview(uid: ID!, fid: ID!, content: String!, rate: Float!): Boolean!
+    likeFood(uid: ID!, fid: ID!): Boolean!
   }
 `;
 

@@ -12,12 +12,21 @@ const resolvers = {
       return category;
     },
     food: (_, { id }, { FoodModel }) => {
-      const food = FoodModel.findOne({ _id: id });
+      const food = FoodModel.findOne({ _id: id }).populate("reviews");
       return food;
     },
-    currentUser: async (_, __, { UserModel, headers, secret }) => {
+    currentUser: (_, __, { UserModel, headers, secret }) => {
       const user = UserModel.getUser(headers["authorization"], secret);
       return user;
+    },
+    userReviews: (_, { uid }, { ReviewModel }) => {
+      const reviews = ReviewModel.find({ writer: uid });
+      console.log(uid);
+      return reviews;
+    },
+    like: (_, { uid }, { FoodModel }) => {
+      const foods = FoodModel.find({ like: { $in: [uid] } });
+      return foods;
     },
   },
   Mutation: {
@@ -58,6 +67,23 @@ const resolvers = {
       }
     },
     logOut: () => {},
+    submitReview: async (_, { uid, fid, content, rate }, { ReviewModel }) => {
+      //const review = ReviewModel.create({})
+    },
+    likeFood: async (_, { uid, fid }, { FoodModel }) => {
+      const liked = await FoodModel.checkLikedOrNot({ uid, fid });
+      if (!liked) {
+        const food = await FoodModel.findOneAndUpdate(
+          { _id: fid },
+          { $push: { like: uid } },
+          { new: true }
+        );
+        if (food) return true;
+        return false;
+      } else {
+        return false;
+      }
+    },
   },
 };
 export default resolvers;

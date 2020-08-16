@@ -17,6 +17,7 @@ const reviewSchema = new mongoose.Schema(
     imgUrl: [
       {
         type: String,
+        default: null,
       },
     ],
   },

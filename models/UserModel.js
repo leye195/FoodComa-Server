@@ -3,33 +3,36 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import moment from "moment";
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    maxlength: 50,
-  },
-  email: {
-    type: String,
-    trim: true,
-    unique: 1,
-  },
-  password: {
-    type: String,
-    minlength: 5,
-  },
-  image: {
-    type: String,
-  },
-  authType: {
-    type: String,
-  },
-  like: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Food",
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      maxlength: 50,
     },
-  ],
-});
+    email: {
+      type: String,
+      trim: true,
+      unique: 1,
+    },
+    password: {
+      type: String,
+      minlength: 5,
+    },
+    image: {
+      type: String,
+    },
+    authType: {
+      type: String,
+    },
+    like: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Food",
+      },
+    ],
+  },
+  { timestamp: true }
+);
 
 userSchema.statics.getUser = async function (authorization, secret) {
   const user = this;
