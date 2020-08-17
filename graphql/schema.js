@@ -35,6 +35,11 @@ const typeDefinitions = gql`
     success: Boolean!
     user: User!
   }
+  type File {
+    filename: String
+    type: String
+    path: String
+  }
 
   type Query {
     currentUser: User
@@ -50,6 +55,8 @@ const typeDefinitions = gql`
     logOut: Boolean!
     submitReview(uid: ID!, fid: ID!, content: String!, rate: Float!): Boolean!
     likeFood(uid: ID!, fid: ID!): Boolean!
+    searchFood(keyword: String!): [Food]
+    uploadProfileImage(id: ID!, file: String!): Boolean!
   }
 `;
 

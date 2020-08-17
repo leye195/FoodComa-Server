@@ -8,6 +8,7 @@ import CategoryModel from "./models/CategoryModel";
 import UserModel from "./models/UserModel";
 import dotenv from "dotenv";
 import "./db";
+
 dotenv.config();
 const secret = process.env.JWT_SECRET;
 const app = express();
@@ -16,16 +17,20 @@ const app = express();
 const server = new ApolloServer({
   typeDefs: typeDefinitions,
   resolvers,
-  context: ({ req: { headers } }) => ({
-    FoodModel,
-    ReviewModel,
-    CategoryModel,
-    UserModel,
-    secret,
-    headers,
-  }),
+  context: ({ req: { headers } }) => {
+    return {
+      FoodModel,
+      ReviewModel,
+      CategoryModel,
+      UserModel,
+      secret,
+      headers,
+    };
+  },
 });
+
 server.applyMiddleware({ app, path: "/graphql" });
+
 app.listen(process.env.PORT || 4040, () => {
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 });
