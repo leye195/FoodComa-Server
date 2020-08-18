@@ -18,6 +18,7 @@ const typeDefinitions = gql`
     writer: User!
     content: String
     rate: Float
+    imgUrl: [String]
   }
   type User {
     _id: String
@@ -53,7 +54,7 @@ const typeDefinitions = gql`
     signUp(email: String!, password: String!): SignResponse!
     signInEmail(email: String!, password: String!): SignResponse!
     logOut: Boolean!
-    submitReview(uid: ID!, fid: ID!, content: String!, rate: Float!): Boolean!
+    submitReview(uid: ID!, fid: ID!, content: String!, rate: Int!): Boolean!
     likeFood(uid: ID!, fid: ID!): Boolean!
     searchFood(keyword: String!): [Food]
     uploadProfileImage(id: ID!, file: String!): Boolean!

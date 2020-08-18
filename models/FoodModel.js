@@ -52,6 +52,7 @@ foodSchema.virtual("avg_rate").get(function () {
   const food = this;
   let total = 0,
     rates = food.rate;
+  console.log(food);
   if (rates.length > 0) {
     for (let i = 0; i < rates.length; i++) total += rates[i];
     total = total / rates.length;
@@ -69,8 +70,8 @@ foodSchema.statics.findFoodsByType = function (typeName, cb) {
   }
 };
 
-foodSchema.statics.checkLikedOrNot = function ({ uid, fid }, cb) {
-  const food = this.findOne({ _id: fid, like: { $in: [uid] } });
+foodSchema.statics.checkLikedOrNot = async function ({ uid, fid }, cb) {
+  const food = await this.findOne({ _id: fid, like: { $in: [uid] } });
   if (food) return true;
   else return false;
 };

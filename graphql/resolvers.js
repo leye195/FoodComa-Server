@@ -79,10 +79,11 @@ const resolvers = {
       { uid, fid, content, rate },
       { ReviewModel, FoodModel }
     ) => {
+      //console.log(uid, fid, content, rate);
       const review = await ReviewModel.create({ writer: uid, content, rate });
       const food = await FoodModel.findOneAndUpdate(
         { _id: fid },
-        { $push: { reviews: review._id } },
+        { $push: { reviews: review._id, rate } },
         { new: true }
       );
       if (food) return true;
@@ -96,10 +97,15 @@ const resolvers = {
           { $push: { like: uid } },
           { new: true }
         );
+        console.log(food);
         if (food) return true;
-        return false;
       } else {
-        return false;
+        const food = await FoodModel.findOneAndUpdate(
+          { _id: fid },
+          { $pull: { like: { $in: [uid] } } },
+          { new: true }
+        );
+        if (food) return false;
       }
     },
     searchFood: async (_, { keyword }, { FoodModel }) => {},
