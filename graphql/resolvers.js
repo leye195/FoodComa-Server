@@ -27,12 +27,20 @@ const resolvers = {
       return user;
     },
     userReviews: (_, { uid }, { ReviewModel }) => {
-      const reviews = ReviewModel.find({ writer: uid });
-      //console.log(uid);
+      const reviews = ReviewModel.find({ writer: uid }).populate("writer");
       return reviews;
     },
     like: (_, { uid }, { FoodModel }) => {
       const foods = FoodModel.find({ like: { $in: [uid] } });
+      return foods;
+    },
+    searchFood: async (_, { keyword }, { FoodModel }) => {
+      const foods = await FoodModel.find({
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { type: { $in: [keyword] } },
+        ],
+      });
       return foods;
     },
   },
@@ -97,7 +105,7 @@ const resolvers = {
           { $push: { like: uid } },
           { new: true }
         );
-        console.log(food);
+        //console.log(food);
         if (food) return true;
       } else {
         const food = await FoodModel.findOneAndUpdate(
@@ -108,7 +116,6 @@ const resolvers = {
         if (food) return false;
       }
     },
-    searchFood: async (_, { keyword }, { FoodModel }) => {},
     uploadProfileImage: async (_, { id, file }, { UserModel }) => {
       if (file.length > 0) {
         const user = await UserModel.findOneAndUpdate(

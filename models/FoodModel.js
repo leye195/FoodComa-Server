@@ -52,7 +52,7 @@ foodSchema.virtual("avg_rate").get(function () {
   const food = this;
   let total = 0,
     rates = food.rate;
-  console.log(food);
+  //console.log(food);
   if (rates.length > 0) {
     for (let i = 0; i < rates.length; i++) total += rates[i];
     total = total / rates.length;

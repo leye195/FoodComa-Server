@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
+    food: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Food",
+    },
     writer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -49,6 +49,7 @@ const typeDefinitions = gql`
     categories: [Category]
     userReviews(uid: ID!): [Review]
     like(uid: ID!): [Food]
+    searchFood(keyword: String!): [Food]
   }
   type Mutation {
     signUp(email: String!, password: String!): SignResponse!
@@ -56,7 +57,6 @@ const typeDefinitions = gql`
     logOut: Boolean!
     submitReview(uid: ID!, fid: ID!, content: String!, rate: Int!): Boolean!
     likeFood(uid: ID!, fid: ID!): Boolean!
-    searchFood(keyword: String!): [Food]
     uploadProfileImage(id: ID!, file: String!): Boolean!
   }
 `;
