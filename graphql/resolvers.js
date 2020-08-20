@@ -88,7 +88,12 @@ const resolvers = {
       { ReviewModel, FoodModel }
     ) => {
       //console.log(uid, fid, content, rate);
-      const review = await ReviewModel.create({ writer: uid, content, rate });
+      const review = await ReviewModel.create({
+        writer: uid,
+        content,
+        rate,
+        food: fid,
+      });
       const food = await FoodModel.findOneAndUpdate(
         { _id: fid },
         { $push: { reviews: review._id, rate } },
@@ -105,7 +110,6 @@ const resolvers = {
           { $push: { like: uid } },
           { new: true }
         );
-        //console.log(food);
         if (food) return true;
       } else {
         const food = await FoodModel.findOneAndUpdate(
