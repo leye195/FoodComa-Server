@@ -1,5 +1,12 @@
 # FoodComa-Server (Express,Apollo-Server,MongoDB)
 
+### Stack
+
+[x] Apollo-Server
+[x] MongoDB
+[x] Nodejs
+[x] Express
+
 ### ToDo
 
 - Server Setting (Apollo-Server)
