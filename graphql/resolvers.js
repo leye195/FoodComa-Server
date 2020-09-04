@@ -26,8 +26,11 @@ const resolvers = {
       const user = UserModel.getUser(headers["authorization"], secret);
       return user;
     },
-    userReviews: (_, { uid }, { ReviewModel }) => {
-      const reviews = ReviewModel.find({ writer: uid }).populate("writer");
+    userReviews: async (_, { uid }, { ReviewModel }) => {
+      const reviews = await ReviewModel.find({ writer: uid })
+        .populate("writer")
+        .populate("food");
+      console.log(reviews);
       return reviews;
     },
     like: (_, { uid }, { FoodModel }) => {
@@ -100,6 +103,20 @@ const resolvers = {
         { new: true }
       );
       if (food) return true;
+      return false;
+    },
+    updateReview: async (_, { fid, content }, { ReviewModel }) => {
+      const review = await ReviewModel.findOneAndUpdate(
+        { fid },
+        { $set: { content } },
+        { new: true }
+      );
+      if (review) return true;
+      return false;
+    },
+    deleteReview: async (_, { fid }, { ReviewModel }) => {
+      const review = await ReviewModel.findOneAndDelete({ fid }, { new: true });
+      if (review) return true;
       return false;
     },
     likeFood: async (_, { uid, fid }, { FoodModel }) => {
